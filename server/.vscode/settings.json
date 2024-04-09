@@ -1,0 +1,24 @@
+{
+    "cSpell.words": [
+        "acontecendo",
+        "alguma",
+        "aplicação",
+        "coisa",
+        "consultar",
+        "contador",
+        "específica",
+        "existem",
+        "fastify",
+        "quantos",
+        "resultados",
+        "soutando",
+        "tabelas",
+        "todas",
+        "todos",
+        "tudo"
+    ],
+
+    "[prisma]" : {
+        "editor.formatOnSave" : true
+    },
+}

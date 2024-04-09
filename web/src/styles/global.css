@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind utilities;
+@tailwind components;
+
+body {
+    -webkit-font-smoothing: antialiased;
+}
+
+.glassy {
+    background: radial-gradient(97.57% 210.75% at 0.9% 2.98%, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 100%);
+    backdrop-filter: blur(45px);
+    top: 2rem;
+    right: 2rem;
+}
+
+.negative-margin {
+    margin-top: -0.8rem;
+}

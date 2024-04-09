@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// gerador de diagrama
+generator erd {
+  provider = "prisma-erd-generator"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// model seria a table do BD
+model Pool {
+  // Definindo como uma chave primária, e que gere automaticamente um valor para ela
+  id       String   @id @default(cuid())
+  title    String
+  code     String   @unique
+  // Vai criar e anotar a data atual em sua criação, e preenchido uma unica vez.
+  createAt DateTime @default(now())
+  ownerId  String?
+
+  participants Participant[]
+  // Definirá um usuário dono do Bolão
+  owner        User?         @relation(fields: [ownerId], references: [id])
+}
+
+model Participant {
+  id     String @id @default(cuid())
+  userId String
+  poolId String
+
+  guesses Guess[]
+  user    User    @relation(fields: [userId], references: [id])
+  pool    Pool    @relation(fields: [poolId], references: [id])
+
+  // Evita com que haja um mesmo participante no bolão
+  @@unique([userId, poolId])
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  // id que virá do google
+  googleId  String?  @unique
+  avatarUrl String?
+  createAt  DateTime @default(now())
+
+  partincipatingAt Participant[]
+  ownPool          Pool[]
+}
+
+model Game {
+  id                    String   @id @default(cuid())
+  date                  DateTime
+  firstTeamCountryCode  String
+  secondTeamCountryCode String
+
+  // Irá receber os guesses que está relacionado a ele
+  guesses Guess[]
+}
+
+model Guess {
+  id               String   @id @default(cuid())
+  firstTeamPoints  Int
+  secondTeamPoints Int
+  createAt         DateTime @default(now())
+  gameId           String
+  participantId    String
+
+  // Irá conectar como relacionamneto a Game
+  participant Participant @relation(fields: [participantId], references: [id])
+  game        Game        @relation(fields: [gameId], references: [id])
+
+  // Criação de 1 palpite por jogador
+  @@unique([participantId, gameId])
+}
